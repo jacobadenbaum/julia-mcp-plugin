@@ -6,7 +6,10 @@
   "plugins": [
     {
       "name": "julia-mcp",
-      "source": "./",
+      "source": {
+        "source": "github",
+        "repo": "jacobadenbaum/julia-mcp-plugin"
+      },
       "description": "Julia MCP server with persistent REPL sessions and background job execution",
       "version": "0.1.0"
     }

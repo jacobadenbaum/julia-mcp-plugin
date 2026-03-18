@@ -1,6 +1,6 @@
 {
   "name": "julia-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Julia MCP server with persistent REPL sessions and background job execution",
   "author": {
     "name": "Jacob Adenbaum"

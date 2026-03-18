@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PreToolUse hook: auto-approve poll-sentinel.sh commands."""
+"""PermissionRequest hook: auto-approve poll-sentinel.sh commands."""
 import json
 import sys
 
@@ -13,9 +13,10 @@ cmd = data.get("tool_input", {}).get("command", "")
 if "poll-sentinel.sh" in cmd:
     print(json.dumps({
         "hookSpecificOutput": {
-            "hookEventName": "PreToolUse",
-            "permissionDecision": "allow",
-            "permissionDecisionReason": "Auto-approved: Julia MCP background job poller",
+            "hookEventName": "PermissionRequest",
+            "decision": {
+                "behavior": "allow"
+            }
         }
     }))
     sys.exit(0)

@@ -45,10 +45,11 @@ if hook_event == "PostToolUse":
         sys.exit(0)
 
     sentinel = match.group(1)
+    plugin_root = os.environ.get("CLAUDE_PLUGIN_ROOT", "")
+    poll_script = os.path.join(plugin_root, "scripts", "poll-sentinel.sh") if plugin_root else "poll-sentinel.sh"
     print(
         f"Background Julia job started. Run this to get notified when it completes:\n"
-        f'Bash(command="while [ ! -f {sentinel} ]; do sleep 5; done && '
-        f'cat {sentinel}", run_in_background=true)'
+        f'Bash(command="{poll_script} {sentinel}", run_in_background=true)'
     )
     sys.exit(0)
 

@@ -26,10 +26,10 @@ A PreToolUse hook on Bash will **block** foreground `julia` commands and redirec
 1. `julia_eval` returns `[BACKGROUNDED] job_id=<id> sentinel=<path>`.
 2. A PostToolUse hook prints the exact `poll-sentinel.sh` Bash command to run.
 3. **Start the poller immediately** with `Bash(command="<provided command>", run_in_background=true)`. A PermissionRequest hook auto-approves `poll-sentinel.sh` commands, so no user confirmation is needed.
-4. The poller checks every 5 seconds for the sentinel file. When it appears, it prints the result and exits, giving you a TaskOutput notification.
-5. The sentinel output is `SUCCESS\n<output>` or `ERROR\n<message>`.
+4. The poller streams partial output via `tail -f` on a log file written alongside the sentinel. You can check progress at any time with `TaskOutput`.
+5. When the job finishes, the poller prints `=== SUCCESS ===` or `=== ERROR ===` and exits, giving you a TaskOutput notification.
 6. **Use the waiting time productively** — work on other tasks, plan next steps, talk to the user.
-7. Use `julia_job_status(job_id)` to check partial output before completion.
+7. Use `julia_job_status(job_id)` to check partial output via MCP (alternative to TaskOutput).
 8. Use `julia_job_cancel(job_id)` to abort a running job if needed.
 
 ## Session busy

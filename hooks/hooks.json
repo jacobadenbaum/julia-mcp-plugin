@@ -2,7 +2,7 @@
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "mcp__julia__julia_eval",
+        "matcher": "mcp__.*julia__julia_eval",
         "hooks": [
           {
             "type": "command",
@@ -22,7 +22,7 @@
         ]
       },
       {
-        "matcher": "mcp__julia__julia_restart",
+        "matcher": "mcp__.*julia__julia_restart",
         "hooks": [
           {
             "type": "command",

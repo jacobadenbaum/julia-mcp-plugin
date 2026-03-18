@@ -1,9 +1,14 @@
 {
-  "plugins": {
-    "julia-mcp": {
-      "name": "Julia MCP Server",
+  "name": "julia-mcp-plugin",
+  "owner": {
+    "name": "Jacob Adenbaum"
+  },
+  "plugins": [
+    {
+      "name": "julia-mcp",
+      "source": ".",
       "description": "Julia MCP server with persistent REPL sessions and background job execution",
-      "source": "."
+      "version": "0.1.0"
     }
-  }
+  ]
 }

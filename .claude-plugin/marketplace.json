@@ -1,0 +1,9 @@
+{
+  "plugins": {
+    "julia-mcp": {
+      "name": "Julia MCP Server",
+      "description": "Julia MCP server with persistent REPL sessions and background job execution",
+      "source": "."
+    }
+  }
+}

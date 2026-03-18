@@ -1,0 +1,10 @@
+{
+  "julia": {
+    "command": "uv",
+    "args": [
+      "run",
+      "--directory", "${CLAUDE_PLUGIN_ROOT}/julia-mcp",
+      "python", "server.py"
+    ]
+  }
+}

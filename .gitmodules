@@ -1,0 +1,4 @@
+[submodule "julia-mcp"]
+	path = julia-mcp
+	url = https://github.com/jacobadenbaum/julia-mcp.git
+	branch = background-execution

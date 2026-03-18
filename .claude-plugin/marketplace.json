@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "julia-mcp",
-      "source": ".",
+      "source": "./",
       "description": "Julia MCP server with persistent REPL sessions and background job execution",
       "version": "0.1.0"
     }

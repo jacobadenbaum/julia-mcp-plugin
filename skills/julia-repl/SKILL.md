@@ -1,6 +1,6 @@
 ---
 name: julia-repl
-description: Use when running Julia code, managing Julia sessions, or working with Julia projects. Provides guidance on using the Julia MCP server's persistent REPL sessions and background job execution.
+description: Use when running Julia code, managing Julia sessions, or working with Julia projects. Provides guidance on using the Julia MCP server's persistent REPL sessions and background job execution. DON'T FORGET TO LOAD THIS BEFORE USING THE MCP SERVER
 ---
 
 # Julia REPL

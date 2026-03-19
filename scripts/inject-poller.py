@@ -30,27 +30,49 @@ hook_event = data.get("hook_event_name", "")
 # --- PostToolUse: inject poller for backgrounded julia_eval ---
 if hook_event == "PostToolUse":
     tool_response = data.get("tool_response", "")
-    if isinstance(tool_response, dict):
-        content = tool_response.get("content", [])
-        if content and isinstance(content[0], dict):
-            tool_response = content[0].get("text", "")
+    # tool_response may be: a plain string, a JSON-encoded string, or a dict
+    if isinstance(tool_response, str):
+        # Try to parse JSON-wrapped responses like '{"result":"..."}'
+        try:
+            parsed = json.loads(tool_response)
+            if isinstance(parsed, dict):
+                tool_response = parsed.get("result", parsed.get("text", tool_response))
+                # Also handle {"content": [{"text": "..."}]} inside parsed
+                if isinstance(tool_response, list):
+                    tool_response = tool_response[0].get("text", "") if tool_response else ""
+        except (json.JSONDecodeError, ValueError):
+            pass
+    elif isinstance(tool_response, dict):
+        # Direct dict: try result, then content[0].text
+        tool_response = tool_response.get("result",
+            tool_response.get("content", [{}])[0].get("text", "")
+            if tool_response.get("content") else str(tool_response))
     if not isinstance(tool_response, str):
         tool_response = str(tool_response)
 
     if "[BACKGROUNDED]" not in tool_response:
         sys.exit(0)
 
-    match = re.search(r"sentinel=(\S+)", tool_response)
+    match = re.search(r"job_id=(\S+)", tool_response)
     if not match:
         sys.exit(0)
 
-    sentinel = match.group(1)
+    job_id = match.group(1)
     plugin_root = os.environ.get("CLAUDE_PLUGIN_ROOT", "")
     poll_script = os.path.join(plugin_root, "scripts", "poll-sentinel.sh") if plugin_root else "poll-sentinel.sh"
-    print(
-        f"Background Julia job started. Run this to get notified when it completes:\n"
-        f'Bash(command="{poll_script} {sentinel}", run_in_background=true)'
-    )
+    poll_cmd = f"{poll_script} {job_id}"
+
+    # Use additionalContext to inject polling instruction into model context
+    print(json.dumps({
+        "hookSpecificOutput": {
+            "hookEventName": "PostToolUse",
+            "additionalContext": (
+                f"Background Julia job started. "
+                f"Start the poller NOW by running: "
+                f'Bash(command="{poll_cmd}", run_in_background=true)'
+            ),
+        }
+    }))
     sys.exit(0)
 
 # --- PreToolUse on Bash: nudge toward MCP for Julia commands ---

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """PermissionRequest hook: auto-approve poll-sentinel.sh commands."""
 import json
+import re
 import sys
 
 try:
@@ -8,9 +9,11 @@ try:
 except Exception:
     sys.exit(0)
 
-cmd = data.get("tool_input", {}).get("command", "")
+cmd = data.get("tool_input", {}).get("command", "").strip()
 
-if "poll-sentinel.sh" in cmd:
+# Only approve if the entire command is poll-sentinel.sh with a single argument
+# (a job ID or absolute sentinel path). Reject compound commands.
+if re.match(r'^(\S*/)?poll-sentinel\.sh\s+\S+\s*$', cmd):
     print(json.dumps({
         "hookSpecificOutput": {
             "hookEventName": "PermissionRequest",

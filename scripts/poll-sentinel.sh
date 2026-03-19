@@ -41,11 +41,15 @@ while [ ! -f "$sentinel" ]; do
     sleep 2
 done
 
-# Let tail catch up, then stop it
-sleep 0.5
+# Stop the streaming tail
 kill "$stream_pid" 2>/dev/null || true
 wait "$stream_pid" 2>/dev/null || true
 
-# Print final status from sentinel
+# Print full output and final status
+echo ""
+echo "=== FULL OUTPUT ==="
+if [ -f "$output" ]; then
+    cat "$output"
+fi
 echo ""
 echo "=== $(head -1 "$sentinel") ==="

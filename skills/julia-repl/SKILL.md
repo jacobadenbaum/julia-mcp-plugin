@@ -16,10 +16,9 @@ A PreToolUse hook on Bash will **block** foreground `julia` commands and redirec
 
 ## Timeout and background execution
 
-- **Default timeout (60s)** is fine for most interactive work.
-- **If a job exceeds the timeout**, it auto-backgrounds instead of being killed. No work is lost. You will receive a `[BACKGROUNDED]` response with a job_id and sentinel path.
-- **Set `timeout=0`** for jobs you know will be long (training runs, test suites, heavy precompilation). This backgrounds the job immediately.
-- **`timeout=None`** (omit the parameter) applies the default. Pkg operations auto-disable the timeout.
+- **Generally, omit the `timeout` parameter.** The default (60s) is sufficient for most work. If a job exceeds the timeout, it auto-backgrounds instead of being killed — no work is lost. You will receive a `[BACKGROUNDED]` response with a job_id and sentinel path.
+- **Set `timeout=0`** only when you want to background a job immediately (e.g., training runs, test suites, heavy precompilation) without waiting the 60s.
+- Pkg operations auto-disable the timeout.
 
 ## When a job is backgrounded
 

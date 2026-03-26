@@ -45,11 +45,6 @@ done
 kill "$stream_pid" 2>/dev/null || true
 wait "$stream_pid" 2>/dev/null || true
 
-# Print full output and final status
-echo ""
-echo "=== FULL OUTPUT ==="
-if [ -f "$output" ]; then
-    cat "$output"
-fi
+# Print final status
 echo ""
 echo "=== $(head -1 "$sentinel") ==="

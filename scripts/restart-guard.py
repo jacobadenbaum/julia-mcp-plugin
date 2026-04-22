@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PreToolUse hook: guard julia_restart. Deny once, escalate to user on retry."""
+"""PreToolUse hook: guard julia_restart. Deny once, allow on retry."""
 import json
 import os
 import sys
@@ -32,8 +32,8 @@ if os.path.exists(state_file):
         mtime = os.path.getmtime(state_file)
         if time.time() - mtime < 60:
             os.unlink(state_file)
-            output_decision("ask",
-                "Escalating julia_restart to user for confirmation.")
+            output_decision("allow",
+                "Allowing julia_restart on retry.")
     except OSError:
         pass
 
@@ -47,6 +47,6 @@ output_decision("deny", (
     "You almost certainly do not want to do this. Restarting the Julia "
     "session destroys all compiled code and session state. Revise.jl "
     "is loaded automatically and picks up code changes without restarting. "
-    "Only restart if the session is truly broken, and check with the user "
-    "first. If you still want to proceed, retry and the user will be asked."
+    "Only restart if the session is truly broken. If you still want to "
+    "proceed, retry and it will be allowed."
 ))
